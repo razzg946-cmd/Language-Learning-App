@@ -3,13 +3,13 @@ from gtts import gTTS
 from deep_translator import GoogleTranslator
 from io import BytesIO
 
-st.title("🌐 Language Learning App by Raj")
+st.title("🌐 Two-Way Language Learning App by Raj")
 
 # Language selection
-input_lang = st.selectbox("Input Language:", ("English", "Hindi", "Tamil"))
-output_lang = st.selectbox("Translate To:", ("English", "Hindi", "Tamil"))
+learn_lang = st.selectbox("Select Language to Learn:", ("Hindi", "Tamil"))
+input_mode = st.radio("Type your sentence in:", ("Learning Language", "English"))
 
-# Map language names to codes
+# Map languages to codes
 lang_map = {"English": "en", "Hindi": "hi", "Tamil": "ta"}
 
 # Input text
@@ -32,14 +32,24 @@ if st.button("Translate & Listen"):
         st.warning("⚠️ Please enter a sentence.")
     else:
         try:
-            src_code = lang_map[input_lang]
-            tgt_code = lang_map[output_lang]
+            learn_code = lang_map[learn_lang]
+            eng_code = lang_map["English"]
 
-            translated = translate(text, src_code, tgt_code)
-            st.markdown(f"**Translated Text ({output_lang}):** {translated}")
+            if input_mode == "Learning Language":
+                # User types in learning language
+                translated = translate(text, learn_code, eng_code)
+                st.markdown(f"**{learn_lang}:** {text}")
+                st.markdown(f"**English:** {translated}")
+                audio_bytes = text_to_speech(text, learn_code)
 
-            audio_bytes = text_to_speech(translated, tgt_code)
+            else:
+                # User types in English
+                translated = translate(text, eng_code, learn_code)
+                st.markdown(f"**English:** {text}")
+                st.markdown(f"**{learn_lang}:** {translated}")
+                audio_bytes = text_to_speech(translated, learn_code)
+
             st.audio(audio_bytes.read(), format="audio/mp3")
-            st.success("✅ Translation and speech ready!")
+            st.success("✅ Translation and pronunciation ready!")
         except Exception as e:
             st.error(f"❌ Error: {e}")
