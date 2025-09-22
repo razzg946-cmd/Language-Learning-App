@@ -3,7 +3,7 @@ from gtts import gTTS
 from deep_translator import GoogleTranslator
 from io import BytesIO
 
-st.title("🌐 Two-Way Language Learning App by Raj")
+st.title("Two-Way Language Learning App by Raj")
 
 # Language selection
 learn_lang = st.selectbox("Select Language to Learn:", ("Hindi", "Tamil"))
@@ -29,7 +29,7 @@ def text_to_speech(text, lang):
 
 if st.button("Translate & Listen"):
     if not text.strip():
-        st.warning("⚠️ Please enter a sentence.")
+        st.warning(" Please enter a sentence.")
     else:
         try:
             learn_code = lang_map[learn_lang]
@@ -50,6 +50,7 @@ if st.button("Translate & Listen"):
                 audio_bytes = text_to_speech(translated, learn_code)
 
             st.audio(audio_bytes.read(), format="audio/mp3")
-            st.success("✅ Translation and pronunciation ready!")
+            st.success(" Translation and pronunciation ready!")
         except Exception as e:
-            st.error(f"❌ Error: {e}")
+            st.error(f"Error: {e}")
+
