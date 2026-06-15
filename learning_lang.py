@@ -113,7 +113,7 @@ placeholder="Type something here..."
 
 def translate_text(text, src_lang, tgt_lang):
 
-```
+
 if src_lang == tgt_lang:
     return text
 
@@ -123,7 +123,7 @@ translator = GoogleTranslator(
 )
 
 return translator.translate(text)
-```
+
 
 # -------------------------
 
