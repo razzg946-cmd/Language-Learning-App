@@ -132,7 +132,7 @@ def translate_text(text, src_lang, tgt_lang):
 
 async def generate_audio(text, voice):
 
-```
+
 communicate = edge_tts.Communicate(
     text=text,
     voice=voice
@@ -146,15 +146,15 @@ async for chunk in communicate.stream():
         audio_data += chunk["data"]
 
 return BytesIO(audio_data)
-```
+
 
 def text_to_speech(text, voice):
 
-```
+
 return asyncio.run(
     generate_audio(text, voice)
 )
-```
+
 
 # -------------------------
 
@@ -164,7 +164,7 @@ return asyncio.run(
 
 if st.button("Translate & Speak"):
 
-```
+
 if not text.strip():
 
     st.warning("Please enter some text.")
@@ -221,7 +221,7 @@ else:
     except Exception as e:
 
         st.error(f"Error: {e}")
-```
+
 
 # -------------------------
 
