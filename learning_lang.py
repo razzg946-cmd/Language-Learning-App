@@ -1,8 +1,14 @@
 import streamlit as st
-import edge_tts
-import asyncio
 from deep_translator import GoogleTranslator
 from io import BytesIO
+import edge_tts
+import asyncio
+
+# -------------------------
+
+# Page Config
+
+# -------------------------
 
 st.set_page_config(
 page_title="Text to Speech & Translation",
@@ -10,7 +16,20 @@ page_icon="🎙️",
 layout="centered"
 )
 
+# -------------------------
+
+# Title
+
+# -------------------------
+
 st.title("🎙️ Text to Speech & Translation Demo by Raj")
+st.write("Translate text and convert it into speech.")
+
+# -------------------------
+
+# Languages
+
+# -------------------------
 
 lang_map = {
 "English": "en",
@@ -20,6 +39,12 @@ lang_map = {
 "Odia": "or",
 "Kannada": "kn"
 }
+
+# -------------------------
+
+# Voice Mapping
+
+# -------------------------
 
 voice_map = {
 "English": {
@@ -48,6 +73,12 @@ voice_map = {
 }
 }
 
+# -------------------------
+
+# Language Selection
+
+# -------------------------
+
 input_lang = st.selectbox(
 "Input Language",
 list(lang_map.keys())
@@ -63,16 +94,29 @@ voice_gender = st.selectbox(
 ["Male", "Female"]
 )
 
+# -------------------------
+
+# Text Input
+
+# -------------------------
+
 text = st.text_area(
 "Enter Text",
 placeholder="Type something here..."
 )
 
+# -------------------------
+
+# Translation Function
+
+# -------------------------
+
 def translate_text(text, src_lang, tgt_lang):
-if src_lang == tgt_lang:
-return text
 
 ```
+if src_lang == tgt_lang:
+    return text
+
 translator = GoogleTranslator(
     source=src_lang,
     target=tgt_lang
@@ -81,16 +125,24 @@ translator = GoogleTranslator(
 return translator.translate(text)
 ```
 
+# -------------------------
+
+# Text To Speech
+
+# -------------------------
+
 async def generate_audio(text, voice):
-communicate = edge_tts.Communicate(
-text=text,
-voice=voice
-)
 
 ```
+communicate = edge_tts.Communicate(
+    text=text,
+    voice=voice
+)
+
 audio_data = b""
 
 async for chunk in communicate.stream():
+
     if chunk["type"] == "audio":
         audio_data += chunk["data"]
 
@@ -98,26 +150,40 @@ return BytesIO(audio_data)
 ```
 
 def text_to_speech(text, voice):
+
+```
 return asyncio.run(
-generate_audio(text, voice)
+    generate_audio(text, voice)
 )
+```
+
+# -------------------------
+
+# Button Action
+
+# -------------------------
 
 if st.button("Translate & Speak"):
 
 ```
 if not text.strip():
+
     st.warning("Please enter some text.")
 
 else:
+
     try:
+
         src_code = lang_map[input_lang]
         tgt_code = lang_map[output_lang]
 
-        translated_text = translate_text(
-            text,
-            src_code,
-            tgt_code
-        )
+        with st.spinner("Translating..."):
+
+            translated_text = translate_text(
+                text,
+                src_code,
+                tgt_code
+            )
 
         st.subheader("Translated Text")
         st.write(translated_text)
@@ -126,12 +192,15 @@ else:
             output_lang
         ][voice_gender]
 
-        audio_file = text_to_speech(
-            translated_text,
-            selected_voice
-        )
+        with st.spinner("Generating Speech..."):
+
+            audio_file = text_to_speech(
+                translated_text,
+                selected_voice
+            )
 
         st.subheader("Audio")
+
         st.audio(
             audio_file,
             format="audio/mp3"
@@ -151,8 +220,15 @@ else:
         )
 
     except Exception as e:
+
         st.error(f"Error: {e}")
 ```
 
+# -------------------------
+
+# Footer
+
+# -------------------------
+
 st.markdown("---")
-st.caption("Made by Raj")
+st.caption("Made with Streamlit + Google Translator + Edge TTS")
