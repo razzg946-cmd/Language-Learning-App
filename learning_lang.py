@@ -113,16 +113,15 @@ placeholder="Type something here..."
 
 def translate_text(text, src_lang, tgt_lang):
 
+    if src_lang == tgt_lang:
+        return text
 
-if src_lang == tgt_lang:
-    return text
+    translator = GoogleTranslator(
+        source=src_lang,
+        target=tgt_lang
+    )
 
-translator = GoogleTranslator(
-    source=src_lang,
-    target=tgt_lang
-)
-
-return translator.translate(text)
+    return translator.translate(text)
 
 
 # -------------------------
