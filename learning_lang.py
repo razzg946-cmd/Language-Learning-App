@@ -4,7 +4,7 @@ from io import BytesIO
 import edge_tts
 import asyncio
 
-# -------------------------
+# -----------------------
 
 # Page Config
 
