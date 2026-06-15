@@ -132,27 +132,26 @@ def translate_text(text, src_lang, tgt_lang):
 
 async def generate_audio(text, voice):
 
+    communicate = edge_tts.Communicate(
+        text=text,
+        voice=voice
+    )
 
-communicate = edge_tts.Communicate(
-    text=text,
-    voice=voice
-)
+    audio_data = b""
 
-audio_data = b""
+    async for chunk in communicate.stream():
 
-async for chunk in communicate.stream():
+        if chunk["type"] == "audio":
+            audio_data += chunk["data"]
 
-    if chunk["type"] == "audio":
-        audio_data += chunk["data"]
-
-return BytesIO(audio_data)
+    return BytesIO(audio_data)
 
 
 def text_to_speech(text, voice):
 
-
-return asyncio.run(
-    generate_audio(text, voice)
+    return asyncio.run(
+        generate_audio(text, voice)
+    
 )
 
 
