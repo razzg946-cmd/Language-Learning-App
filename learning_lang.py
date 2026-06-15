@@ -163,12 +163,11 @@ def text_to_speech(text, voice):
 
 if st.button("Translate & Speak"):
 
+    if not text.strip():
+        st.warning("Please enter some text.")
 
-if not text.strip():
-
-    st.warning("Please enter some text.")
-
-else:
+    else:
+        st.write("Continue...")
 
     try:
 
